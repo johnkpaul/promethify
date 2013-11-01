@@ -1,0 +1,42 @@
+{
+  "name": "promethify",
+  "version": "0.1.0",
+  "description": "Browserify plugin async load code like AMD",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js",
+    "pretest": "npm run hint",
+    "hint": "jshint --config .jshintrc ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnkpaul/promethify"
+  },
+  "keywords": [
+    "browserify",
+    "v2",
+    "js",
+    "plugin",
+    "transform"
+  ],
+  "author": "John K. Paul",
+  "license": "MIT",
+  "dependencies": {
+    "through": "~2.2.7",
+    "innersource": "0.0.2",
+    "detective": "~2.2.0",
+    "inline-source-map": "~0.2.5",
+    "combine-source-map": "~0.2.0",
+    "lodash": "~2.2.1",
+    "scriptjs": "~2.4.0"
+  },
+  "devDependencies": {
+    "browserify": "~2.29.1",
+    "jshint": "~2.1.11",
+    "convert-source-map": "~0.2.6",
+    "coffeeify": "~0.5.2"
+  },
+  "peerDependencies": {
+    "browserify": "2.x"
+  }
+}
