@@ -1,5 +1,7 @@
 'use strict';
 
+var browserify = require('browserify');
+var requireify = require('requireify');
 var through = require('through');
 var innersource = require('innersource');
 var detective = require('detective');
@@ -9,6 +11,9 @@ var _ = require('lodash');
 
 var prepend = innersource(addRequire).replace(/\n/g, '');
 var postpend = innersource(addModule).replace(/\n/g, '');
+
+var bundles = {};
+var server = require('./server').start(bundles);
 
 module.exports = function(filename) {
   var buffer = '';
@@ -35,58 +40,29 @@ module.exports = function(filename) {
 };
 
 function addModule(){
-  var global = (function(){ return this; }).call(null);
-  if(typeof __filename !== 'undefined'){
-    global.require[__filename.substring(0, __filename.length - 3)] = module.exports;
-  }
 }
 
 function addRequire(){
-  var global = (function(){ return this; }).call(null);
-  if(!global.require){
-    global.require = global.require || function require(key){return global.require[key];};
+  /*global require: true*/
+  var tmpRequire = require;
+  var scriptjs = require('scriptjs');
+  require = function require(keys, callback){
+    if(Array.isArray(keys)){
+      scriptjs('http://localhost:8089'+keys[0]);
+      console.log(arguments);
+      console.log( callback);
+      return;
+    }else{
+      return tmpRequire.apply(null, arguments);
+    }
 
-    (function(){
-    var require = global.require;
-    var ret = global.require;
-        
-    Object.defineProperty(global, 'require', {
-        get: function(){
-          return ret;
-        },
-        set: function(newRequire){
-            ret = function(key){
-                if(require[key]){
-                  return require[key];
-                }else{
-                  var temp = ret;
-                  var module;
-                  ret = newRequire;
-                  try {
-                    module = newRequire(key);
-                  }
-                  catch(e){
-                    ret = temp;
-                    throw e;
-                  }
-                  ret = temp;
-                  return module;
-                }
-            };
-            for(var key in require){
-              ret[key] = require[key];
-            }
-        }
-    });
-
-    })();
-  }
-
+  };
 }
 
 function getAsyncRequires(source){
   var amdRequires = detective.find(source, {nodes: true});
   var amdRequireArray = amdRequires.expressions.map(function(arrString){
+    /* jshint evil: true */
     var array = eval(arrString);
     return array;
   });
@@ -94,5 +70,8 @@ function getAsyncRequires(source){
 }
 
 function makeBrowserifyBundle(asyncDep){
+  var b = browserify({debug: true});
+  b.transform(requireify);
 
+  bundles[asyncDep] = b.add('/Users/jpaul/workspace/promethify/test'+asyncDep).bundle();
 }

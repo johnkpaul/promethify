@@ -4,7 +4,7 @@
   "description": "Browserify plugin async load code like AMD",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js",
+    "test": "zuul-mp --local 3100 --reporter list -- test/test.js",
     "pretest": "npm run hint",
     "hint": "jshint --config .jshintrc ."
   },
@@ -28,7 +28,8 @@
     "inline-source-map": "~0.2.5",
     "combine-source-map": "~0.2.0",
     "lodash": "~2.2.1",
-    "scriptjs": "~2.4.0"
+    "scriptjs": "~2.4.0",
+    "requireify": "~0.1.1"
   },
   "devDependencies": {
     "browserify": "~2.29.1",

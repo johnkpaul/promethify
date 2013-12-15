@@ -1,0 +1,4 @@
+ui: mocha-tdd
+browsers:
+  - name: chrome
+    version: latest
