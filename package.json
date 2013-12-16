@@ -8,6 +8,9 @@
     "pretest": "npm run hint",
     "hint": "jshint --config .jshintrc ."
   },
+  "browserify": {
+    "transform": ["./index.js", "requireify"]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/johnkpaul/promethify"
@@ -32,7 +35,7 @@
     "requireify": "~0.1.1"
   },
   "devDependencies": {
-    "browserify": "~3.3.0",
+    "browserify": "git://github.com/johnkpaul/node-browserify.git#add_basedir_for_globals",
     "jshint": "~2.1.11",
     "convert-source-map": "~0.2.6",
     "coffeeify": "~0.5.2"
