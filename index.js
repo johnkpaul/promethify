@@ -43,14 +43,17 @@ function addModule(){
 }
 
 function addRequire(){
-  /*global require: true*/
+  /* jshint shadow: true */
   var tmpRequire = require;
   var scriptjs = require('scriptjs');
-  require = function require(keys, callback){
+  var require = function require(keys, callback){
     if(Array.isArray(keys)){
-      scriptjs('http://localhost:8089'+keys[0]);
-      console.log(arguments);
-      console.log( callback);
+      var urls = keys.map(function(key){ return 'http://localhost:8089'+key; });
+      var scriptParam = [urls, function(){
+        var deps = keys.map(function(key){ return window.require(key); });
+        callback.apply(null, deps);
+      }];
+      scriptjs.apply(null, scriptParam);
       return;
     }else{
       return tmpRequire.apply(null, arguments);
@@ -73,5 +76,9 @@ function makeBrowserifyBundle(asyncDep){
   var b = browserify({debug: true});
   b.transform(requireify);
 
-  bundles[asyncDep] = b.add('/Users/jpaul/workspace/promethify/test'+asyncDep).bundle();
+  b.add('/Users/jpaul/workspace/promethify/test'+asyncDep).bundle({basedir: process.cwd()+'/test'}, function(err, src){
+    bundles[asyncDep] = src;
+  });
 }
+
+

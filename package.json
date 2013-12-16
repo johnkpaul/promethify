@@ -14,7 +14,7 @@
   },
   "keywords": [
     "browserify",
-    "v2",
+    "v3",
     "js",
     "plugin",
     "transform"
@@ -32,12 +32,12 @@
     "requireify": "~0.1.1"
   },
   "devDependencies": {
-    "browserify": "~2.29.1",
+    "browserify": "~3.3.0",
     "jshint": "~2.1.11",
     "convert-source-map": "~0.2.6",
     "coffeeify": "~0.5.2"
   },
   "peerDependencies": {
-    "browserify": "2.x"
+    "browserify": "3.x"
   }
 }

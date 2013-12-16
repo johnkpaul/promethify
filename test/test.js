@@ -8,6 +8,12 @@ describe('async require', function(){
       assert.equal(dep.hello, 'world');
       done();
     });
+  });
 
+  it('should provide dependencies', function(done){
+    require(['/module'], function(module){
+      assert.equal(module.hello, 'test');
+      done();
+    });
   });
 });

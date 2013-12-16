@@ -1,3 +1,9 @@
+# TODO
+add docs explaining to install scriptjs separately
+PR zuul to allow to pass transform
+PR browserify to show passing basedir 
+add basedir option to promethify
+
 # promethify
 
 Browserify v2 transform to require AMD style and async fetch bundles with minimal configuration
