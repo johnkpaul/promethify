@@ -38,7 +38,8 @@
     "browserify": "git://github.com/johnkpaul/node-browserify.git#add_basedir_for_globals",
     "jshint": "~2.1.11",
     "convert-source-map": "~0.2.6",
-    "coffeeify": "~0.5.2"
+    "coffeeify": "~0.5.2",
+    "zuul-mp": "~0.1.4"
   },
   "peerDependencies": {
     "browserify": "3.x"
