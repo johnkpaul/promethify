@@ -2,7 +2,7 @@
 
 [![build status](https://secure.travis-ci.org/johnkpaul/promethify.png)](http://travis-ci.org/johnkpaul/promethify)
 
-Browserify v2 transform to require AMD style and async fetch bundles with minimal configuration
+Browserify v2+ transform to require AMD style and async fetch bundles with minimal configuration
 
 scriptjs is a required dependency to use this transform. `npm install --save scriptjs`
 
