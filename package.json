@@ -10,6 +10,7 @@
   },
   "promethify": {
     "basedir": "test",
+    "hostname": "localhost",
     "port": 8089
   },
   "browserify": {

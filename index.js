@@ -25,7 +25,11 @@ module.exports = function(filename) {
   function() {
     pack.then(function(data){
       var port = data.pack.promethify.port;
-      var prepend = innersource(addRequire).replace('PORT_NUM', port).replace(/\n/g, '');
+      var hostname = data.pack.promethify.hostname;
+      var prepend = innersource(addRequire)
+                        .replace('HOSTNAME', hostname)
+                        .replace('PORT_NUM', port)
+                        .replace(/\n/g, '');
       var asyncRequres = getAsyncRequires(buffer);
       asyncRequres.forEach(makeBrowserifyBundle);
 
@@ -54,7 +58,7 @@ function addRequire(){
   var scriptjs = require('scriptjs');
   var require = function require(keys, callback){
     if(Array.isArray(keys)){
-      var urls = keys.map(function(key){ return 'http://localhost:PORT_NUM'+key; });
+      var urls = keys.map(function(key){ return 'http://HOSTNAME:PORT_NUM'+key; });
       var scriptParam = [urls, function(){
         var deps = keys.map(function(key){ return window.require(key); });
         callback.apply(null, deps);
