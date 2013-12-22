@@ -10,7 +10,7 @@
   },
   "promethify": {
     "basedir": "test",
-    "port": "8089"
+    "port": 8089
   },
   "browserify": {
     "transform": [

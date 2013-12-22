@@ -10,11 +10,11 @@ var combine = require('combine-source-map');
 var _ = require('lodash');
 var findPackageJson = require('./findPackageJson');
 
-var prepend = innersource(addRequire).replace(/\n/g, '');
 var postpend = innersource(addModule).replace(/\n/g, '');
 
 var bundles = {};
 var server = require('./server').start(bundles);
+var pack = findPackageJson();
 
 module.exports = function(filename) {
   var buffer = '';
@@ -23,19 +23,24 @@ module.exports = function(filename) {
     buffer += chunk.toString();
   },
   function() {
-    var asyncRequres = getAsyncRequires(buffer);
-    asyncRequres.forEach(makeBrowserifyBundle);
+    pack.then(function(data){
+      var port = data.pack.promethify.port;
+      var prepend = innersource(addRequire).replace('PORT_NUM', port).replace(/\n/g, '');
+      var asyncRequres = getAsyncRequires(buffer);
+      asyncRequres.forEach(makeBrowserifyBundle);
 
-    var totalPrelude = prepend;
-    var offset = totalPrelude.split('\n').length - 1;
-    
-    var complete = totalPrelude + combine.removeComments(buffer) + postpend;
-    
-    var map = combine.create().addFile({ sourceFile: filename, source: buffer}, {line: offset});
+      var totalPrelude = prepend;
+      var offset = totalPrelude.split('\n').length - 1;
+      
+      var complete = totalPrelude + combine.removeComments(buffer) + postpend;
+      
+      var map = combine.create().addFile({ sourceFile: filename, source: buffer}, {line: offset});
 
-    this.queue( complete + '\n'+map.comment());
+      this.queue( complete + '\n'+map.comment());
 
-    this.queue(null);
+      this.queue(null);
+      
+    }.bind(this)).done();
   });
 
 };
@@ -49,7 +54,7 @@ function addRequire(){
   var scriptjs = require('scriptjs');
   var require = function require(keys, callback){
     if(Array.isArray(keys)){
-      var urls = keys.map(function(key){ return 'http://localhost:8089'+key; });
+      var urls = keys.map(function(key){ return 'http://localhost:PORT_NUM'+key; });
       var scriptParam = [urls, function(){
         var deps = keys.map(function(key){ return window.require(key); });
         callback.apply(null, deps);
@@ -90,4 +95,3 @@ function makeBrowserifyBundle(asyncDep){
     
   }).done();
 }
-
