@@ -8,8 +8,15 @@
     "pretest": "npm run hint",
     "hint": "jshint --config .jshintrc ."
   },
+  "promethify": {
+    "basedir": "test",
+    "port": "8089"
+  },
   "browserify": {
-    "transform": ["./index.js", "requireify"]
+    "transform": [
+      "./index.js",
+      "requireify"
+    ]
   },
   "repository": {
     "type": "git",
@@ -32,7 +39,9 @@
     "combine-source-map": "~0.2.0",
     "lodash": "~2.2.1",
     "scriptjs": "~2.4.0",
-    "requireify": "~0.1.1"
+    "requireify": "~0.1.1",
+    "find-parent-dir": "~0.1.0",
+    "q": "~0.9.7"
   },
   "devDependencies": {
     "browserify": "git://github.com/johnkpaul/node-browserify.git#add_basedir_for_globals",

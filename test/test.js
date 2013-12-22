@@ -16,4 +16,12 @@ describe('async require', function(){
       done();
     });
   });
+
+  it('should load on demand', function(done){
+    assert.equal(window.loaded, undefined);
+    require(['/setGlobal'], function(module){
+      assert.equal(window.loaded, true);
+      done();
+    });
+  });
 });

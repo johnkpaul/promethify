@@ -8,6 +8,7 @@ var detective = require('detective');
 var generator = require('inline-source-map');
 var combine = require('combine-source-map');
 var _ = require('lodash');
+var findPackageJson = require('./findPackageJson');
 
 var prepend = innersource(addRequire).replace(/\n/g, '');
 var postpend = innersource(addModule).replace(/\n/g, '');
@@ -74,11 +75,19 @@ function getAsyncRequires(source){
 
 function makeBrowserifyBundle(asyncDep){
   var b = browserify({debug: true});
+
   b.transform(requireify);
 
-  b.add('/Users/jpaul/workspace/promethify/test'+asyncDep).bundle({basedir: process.cwd()+'/test'}, function(err, src){
-    bundles[asyncDep] = src;
-  });
-}
+  findPackageJson().then(function(data){
+    var basedir = data.pack.promethify.basedir;
+    var dir = data.dir;
 
+    b
+      .add(dir + '/' + basedir + asyncDep)
+      .bundle({basedir: dir + '/' + basedir}, function(err, src){
+        bundles[asyncDep] = src;
+      });
+    
+  }).done();
+}
 
