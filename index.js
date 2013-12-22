@@ -9,6 +9,7 @@ var generator = require('inline-source-map');
 var combine = require('combine-source-map');
 var _ = require('lodash');
 var findPackageJson = require('./findPackageJson');
+var scriptjsLocation = require.resolve('scriptjs');
 
 var postpend = innersource(addModule).replace(/\n/g, '');
 
@@ -27,9 +28,10 @@ module.exports = function(filename) {
       var port = data.pack.promethify.port;
       var hostname = data.pack.promethify.hostname;
       var prepend = innersource(addRequire)
-                        .replace('HOSTNAME', hostname)
-                        .replace('PORT_NUM', port)
-                        .replace(/\n/g, '');
+                    .replace('SCRIPTJS_LOC', scriptjsLocation)
+                    .replace('HOSTNAME', hostname)
+                    .replace('PORT_NUM', port)
+                    .replace(/\n/g, '');
       var asyncRequres = getAsyncRequires(buffer);
       asyncRequres.forEach(makeBrowserifyBundle);
 
@@ -52,10 +54,11 @@ module.exports = function(filename) {
 function addModule(){
 }
 
+
 function addRequire(){
   /* jshint shadow: true */
   var tmpRequire = require;
-  var scriptjs = require('scriptjs');
+  var scriptjs = require('SCRIPTJS_LOC');
   var require = function require(keys, callback){
     if(Array.isArray(keys)){
       var urls = keys.map(function(key){ return 'http://HOSTNAME:PORT_NUM'+key; });
