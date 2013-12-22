@@ -48,7 +48,7 @@
     "jshint": "~2.1.11",
     "convert-source-map": "~0.2.6",
     "coffeeify": "~0.5.2",
-    "zuul-mp": "~0.1.4"
+    "zuul-mp": "~0.2.0"
   },
   "peerDependencies": {
     "browserify": ">=2.0.0",

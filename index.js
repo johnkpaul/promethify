@@ -9,6 +9,7 @@ var generator = require('inline-source-map');
 var combine = require('combine-source-map');
 var _ = require('lodash');
 var findPackageJson = require('./findPackageJson');
+var scriptjsLocation = require.resolve('scriptjs');
 
 var postpend = innersource(addModule).replace(/\n/g, '');
 
@@ -25,7 +26,12 @@ module.exports = function(filename) {
   function() {
     pack.then(function(data){
       var port = data.pack.promethify.port;
-      var prepend = innersource(addRequire).replace('PORT_NUM', port).replace(/\n/g, '');
+      console.log(scriptjsLocation);
+      var prepend = innersource(addRequire)
+                    .replace('SCRIPTJS_LOC', scriptjsLocation)
+                    .replace('PORT_NUM', port)
+                    .replace(/\n/g, '');
+                    console.log(prepend);
       var asyncRequres = getAsyncRequires(buffer);
       asyncRequres.forEach(makeBrowserifyBundle);
 
@@ -48,10 +54,11 @@ module.exports = function(filename) {
 function addModule(){
 }
 
+
 function addRequire(){
   /* jshint shadow: true */
   var tmpRequire = require;
-  var scriptjs = require('scriptjs');
+  var scriptjs = require('SCRIPTJS_LOC');
   var require = function require(keys, callback){
     if(Array.isArray(keys)){
       var urls = keys.map(function(key){ return 'http://localhost:PORT_NUM'+key; });
