@@ -9,19 +9,36 @@ Browserify v2+ transform to require AMD style and async fetch bundles with minim
 
 ```javascript
 
-//foo.js
+//example.js
 
-console.log(window.loaded) // undefined
+'use strict';
 
-require(['/bar'], function(bar){
-  console.log(bar.hello); // async fetch the bar bundle and log 'world'
-  console.log(window.loaded); // true
+var $ = require('jquery');
+var Backbone = require('backbone');
+var stateManager = require('./core/state_manager');
+var router = require('../../shared/routes/client_routes');
+var routeHandler = require('./core/router/route_handler');
+var sync = require('./core/sync');
+
+stateManager.init();
+
+$(function(){
+
+  Backbone.history.start({
+    root: '/',
+    pushState: stateManager.history_fix().push_state(),
+    silent: false
+  });
+
+  // config.js and analytics.js are inside the "basedir": "test"
+  // from the config in package.json, these scripts are then
+  // loaded in with script.js
+  require(['config', 'analytics'], function(config, analytics) {
+    alert(config.env);
+    analytics.init();
+  });
+
 });
-
-//bar.js
-
-module.exports = {hello: 'world'};
-window.loaded = true;
 
 ```
 
