@@ -35,7 +35,7 @@ window.loaded = true;
   }
 ```
 
-Configuration is provided through the package.json of your project. There are two required properties.
+Configuration is provided through the package.json of your project. There are three required properties.
 
 1. `basedir` This option is the path from the package.json of your project that you want to use for lookups when requiring files asynchronously. 
 2. `hostname` This option is the hostname that will be looked up from the browser to find this web server
