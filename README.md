@@ -7,39 +7,45 @@ Browserify v2+ transform to require AMD style and async fetch bundles with minim
 
 ## Usage
 
+### Example 1
 ```javascript
 
-//example.js
-
-'use strict';
-
+//main.js
 var $ = require('jquery');
-var Backbone = require('backbone');
-var stateManager = require('./core/state_manager');
-var router = require('../../shared/routes/client_routes');
-var routeHandler = require('./core/router/route_handler');
-var sync = require('./core/sync');
 
-stateManager.init();
-
-$(function(){
-
-  Backbone.history.start({
-    root: '/',
-    pushState: stateManager.history_fix().push_state(),
-    silent: false
+$('.buy-product').click(function(){
+  require(['/shopping-cart'], function(shoppingCart) {
+    // only downloaded shopping cart code including jqueryui when necessary
+    shoppingCart.open();
   });
-
-  // config.js and analytics.js are inside the "basedir": "test"
-  // from the config in package.json, these scripts are then
-  // loaded in with script.js
-  require(['config', 'analytics'], function(config, analytics) {
-    alert(config.env);
-    analytics.init();
-  });
-
 });
 
+//shopping-cart.js
+var $ = require('jquery');
+require('jqueryui');
+
+module.exports = {
+  open: function(){
+    // open modal with jquery ui
+  }
+}
+```
+
+### Example 2
+```javascript
+//foo.js
+
+console.log(window.loaded) // undefined
+
+require(['/bar'], function(bar){
+  console.log(bar.hello); // async fetch the bar bundle and log 'world'
+  console.log(window.loaded); // true
+});
+
+//bar.js
+
+module.exports = {hello: 'world'};
+window.loaded = true;
 ```
 
 ## Configuration
