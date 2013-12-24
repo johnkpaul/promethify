@@ -4,8 +4,13 @@ var port = '8089';
 var findPackageJson = require('./findPackageJson');
 var pack = findPackageJson();
 
+var bundles = {};
+
 module.exports = {
-  start: function(bundles){
+  start: function(bundleEmitter){
+    bundleEmitter.on('bundle', function(filename, promise){
+      bundles[filename] = promise;
+    });
     pack.then(function(data){
       var port = data.pack.promethify.port;
       http.createServer(function(request, response) {

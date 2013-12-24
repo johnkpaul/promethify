@@ -9,20 +9,22 @@ var generator = require('inline-source-map');
 var combine = require('combine-source-map');
 var _ = require('lodash');
 var findPackageJson = require('./findPackageJson');
+var outputDirWriter = require('./outputDirWriter');
 var scriptjsLocation = require.resolve('scriptjs');
 var Q = require('q');
+var events = require('events');
 
 var postpend = innersource(addModule).replace(/\n/g, '');
 
-var bundles = {};
+var bundleEmitter = new events.EventEmitter();
 var pack;
 
 module.exports = function(filename) {
   if(!pack){
     pack = findPackageJson(filename);
     pack.then(function(data){
-      if(!data.pack.outputDir){
-        var server = require('./server').start(bundles);
+      if(!data.pack.promethify.outputDir){
+        var server = require('./server').start(bundleEmitter);
       }
       else{
       
@@ -104,7 +106,7 @@ function getAsyncRequires(source){
 
 function makeBrowserifyBundle(asyncDep){
   var def = Q.defer();
-  bundles[asyncDep] = def.promise;
+  bundleEmitter.emit('bundle', asyncDep, def.promise);
   var b = browserify({debug: true});
 
   b.transform(requireify);
