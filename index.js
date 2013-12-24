@@ -15,12 +15,20 @@ var Q = require('q');
 var postpend = innersource(addModule).replace(/\n/g, '');
 
 var bundles = {};
-var server = require('./server').start(bundles);
 var pack;
 
 module.exports = function(filename) {
   if(!pack){
     pack = findPackageJson(filename);
+    pack.then(function(data){
+      if(!data.pack.outputDir){
+        var server = require('./server').start(bundles);
+      }
+      else{
+      
+      }
+    
+    });
   }
   var buffer = '';
 

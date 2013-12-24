@@ -6,6 +6,7 @@
   "scripts": {
     "test": "zuul-mp --local 3100 --reporter list -- test/test.js",
     "pretest": "npm run hint",
+    "outputdirtest": "zuul-mp --local 3100 --reporter list -- test/outputDirTests/test.js",
     "hint": "jshint --config .jshintrc ."
   },
   "promethify": {
