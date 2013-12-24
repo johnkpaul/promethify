@@ -4,7 +4,6 @@
 
 Browserify v2+ transform to require AMD style and async fetch bundles with minimal configuration
 
-scriptjs is a required dependency to use this transform. `npm install --save scriptjs`
 
 ## Usage
 
