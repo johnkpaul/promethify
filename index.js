@@ -27,7 +27,7 @@ module.exports = function(filename) {
         var server = require('./server').start(bundleEmitter);
       }
       else{
-      
+        outputDirWriter.start(bundleEmitter, data);
       }
     
     });

@@ -10,7 +10,8 @@ module.exports = function(filename){
        def.reject(err);
      }
     var pack = require(dir + '/package');
-    def.resolve({pack: pack, dir: dir});
+    var fullDir = dir === '.' ? path.dirname(filename) : dir;
+    def.resolve({pack: pack, dir: fullDir});
   });
   return def.promise;
 };
