@@ -16,9 +16,12 @@ var postpend = innersource(addModule).replace(/\n/g, '');
 
 var bundles = {};
 var server = require('./server').start(bundles);
-var pack = findPackageJson();
+var pack;
 
 module.exports = function(filename) {
+  if(!pack){
+    pack = findPackageJson(filename);
+  }
   var buffer = '';
 
   return through(function(chunk) {
@@ -98,7 +101,7 @@ function makeBrowserifyBundle(asyncDep){
 
   b.transform(requireify);
 
-  findPackageJson().then(function(data){
+  pack.then(function(data){
     var basedir = data.pack.promethify.basedir;
     var dir = data.dir;
 
