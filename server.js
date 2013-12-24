@@ -9,8 +9,11 @@ module.exports = {
     pack.then(function(data){
       var port = data.pack.promethify.port;
       http.createServer(function(request, response) {
-        response.writeHead(200, {'Content-Type': 'application/javascript'});
-        response.end(bundles[request.url]);
+        bundles[request.url].then(function(src){
+          response.writeHead(200, {'Content-Type': 'application/javascript'});
+          response.end(src);
+        
+        });
 
       }).listen(parseInt(port, 10));
     

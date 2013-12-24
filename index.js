@@ -10,6 +10,7 @@ var combine = require('combine-source-map');
 var _ = require('lodash');
 var findPackageJson = require('./findPackageJson');
 var scriptjsLocation = require.resolve('scriptjs');
+var Q = require('q');
 
 var postpend = innersource(addModule).replace(/\n/g, '');
 
@@ -24,6 +25,11 @@ module.exports = function(filename) {
     buffer += chunk.toString();
   },
   function() {
+    if(_.contains(filename, 'scriptjs')){
+       this.queue(buffer);
+       this.queue(null);
+       return;
+    }
     pack.then(function(data){
       var port = data.pack.promethify.port;
       var hostname = data.pack.promethify.hostname;
@@ -86,6 +92,8 @@ function getAsyncRequires(source){
 }
 
 function makeBrowserifyBundle(asyncDep){
+  var def = Q.defer();
+  bundles[asyncDep] = def.promise;
   var b = browserify({debug: true});
 
   b.transform(requireify);
@@ -97,7 +105,7 @@ function makeBrowserifyBundle(asyncDep){
     b
       .add(dir + '/' + basedir + asyncDep)
       .bundle({basedir: dir + '/' + basedir}, function(err, src){
-        bundles[asyncDep] = src;
+        def.resolve(src);
       });
     
   }).done();
