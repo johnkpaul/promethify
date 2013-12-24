@@ -1,6 +1,6 @@
 # promethify
 
-[![build status](https://secure.travis-ci.org/johnkpaul/promethify.png)](http://travis-ci.org/johnkpaul/promethify)
+[![build status](https://secure.travis-ci.org/johnkpaul/promethify.png?branch=master)](http://travis-ci.org/johnkpaul/promethify)
 
 Browserify v2+ transform to require AMD style and async fetch bundles with minimal configuration
 
