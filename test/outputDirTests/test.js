@@ -8,4 +8,11 @@ describe('async require', function(){
       done();
     });
   });
+
+  it('should provide dependencies', function(done){
+    require(['/foo/dep'], function(dep){
+      assert.equal(dep, 'world');
+      done();
+    });
+  });
 });

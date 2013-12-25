@@ -1,16 +1,20 @@
 'use strict';
 var findPackageJson = require('./findPackageJson');
-var bundles = {};
+var path = require('path');
+var fs = require('fs');
+var mkdirp = require('mkdirp');
 
 module.exports = {
   start: function(bundleEmitter, packageData){
     bundleEmitter.on('bundle', function(filename, promise){
-      bundles[filename] = promise;
+      promise.then(function(src){
+        var dir = packageData.dir;
+        var outputDir = packageData.pack.promethify.outputDir;
+        var fullDir = path.join(dir, outputDir);
+        mkdirp.sync(path.join(fullDir, path.dirname(filename)));
+        fs.writeFileSync(path.join(fullDir, filename), src);
+      });
     });
-    var dir = packageData.dir;
-  
-    console.log('the dir' , dir);
-    console.log(process.cwd());
 
   }
 };

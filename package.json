@@ -43,7 +43,8 @@
     "scriptjs": "~2.4.0",
     "requireify": "~0.1.1",
     "find-parent-dir": "~0.1.0",
-    "q": "~0.9.7"
+    "q": "~0.9.7",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {
     "browserify": "git://github.com/johnkpaul/node-browserify.git#add_basedir_for_globals",

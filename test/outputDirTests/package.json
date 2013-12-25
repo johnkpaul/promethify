@@ -6,7 +6,7 @@
     "basedir": "src",
     "hostname": "localhost",
     "outputDir": "out",
-    "outputDeployPath": "localhost:8089",
+    "outputDeployPath": "out",
     "port": 8089
   },
   "browserify": {

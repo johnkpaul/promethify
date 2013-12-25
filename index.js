@@ -46,9 +46,11 @@ module.exports = function(filename) {
     pack.then(function(data){
       var port = data.pack.promethify.port;
       var hostname = data.pack.promethify.hostname;
+      var outputDeployPath = getPath(data.pack.promethify.outputDeployPath);
       var prepend = innersource(addRequire)
                     .replace('SCRIPTJS_LOC', scriptjsLocation)
                     .replace('HOSTNAME', hostname)
+                    .replace('OUTPUT_DEPLOY_PATH', outputDeployPath)
                     .replace('PORT_NUM', port)
                     .replace(/\n/g, '');
       var asyncRequres = getAsyncRequires(buffer);
@@ -80,7 +82,8 @@ function addRequire(){
   var scriptjs = require('SCRIPTJS_LOC');
   var require = function require(keys, callback){
     if(Array.isArray(keys)){
-      var urls = keys.map(function(key){ return 'http://HOSTNAME:PORT_NUM'+key; });
+      var urls = keys.map(function(key){ return 'http://HOSTNAME:PORT_NUMOUTPUT_DEPLOY_PATH'+key; });
+      console.log(urls);
       var scriptParam = [urls, function(){
         var deps = keys.map(function(key){ return window.require(key); });
         callback.apply(null, deps);
@@ -122,4 +125,13 @@ function makeBrowserifyBundle(asyncDep){
       });
     
   }).done();
+}
+
+function getPath(deployPath){
+  if(deployPath){
+    return '/' + deployPath;
+  }
+  else {
+    return '';
+  }
 }
