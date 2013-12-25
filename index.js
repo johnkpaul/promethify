@@ -85,7 +85,6 @@ function addRequire(){
   var require = function require(keys, callback){
     if(Array.isArray(keys)){
       var urls = keys.map(function(key){ return 'http://HOSTNAME:PORT_NUMOUTPUT_DEPLOY_PATH'+key; });
-      console.log(urls);
       var scriptParam = [urls, function(){
         var deps = keys.map(function(key){ return window.require(key); });
         callback.apply(null, deps);

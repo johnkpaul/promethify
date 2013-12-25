@@ -4,7 +4,7 @@
   "description": "Browserify plugin async load code like AMD",
   "main": "index.js",
   "scripts": {
-    "test": "./test/outputDirTests/test.sh; zuul-mp --local 3100 --reporter list -- test/test.js",
+    "test": "node test/outputDirTests/runner.js && zuul-mp --local 3100 --reporter list -- test/test.js",
     "pretest": "npm run hint",
     "outputdirtest": "zuul-mp --local 3100 --reporter list -- test/outputDirTests/test.js",
     "hint": "jshint --config .jshintrc ."

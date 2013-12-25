@@ -11,7 +11,6 @@ module.exports = {
         var dir = packageData.dir;
         var outputDir = packageData.pack.promethify.outputDir;
         var fullDir = path.join(dir, outputDir);
-        console.log('rwrintg file! ', filename);
         mkdirp.sync(path.join(fullDir, path.dirname(filename)));
         fs.writeFileSync(path.join(fullDir, filename), src);
       });
