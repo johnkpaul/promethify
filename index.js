@@ -54,7 +54,7 @@ module.exports = function(filename) {
                     .replace('PORT_NUM', port)
                     .replace(/\n/g, '');
       var asyncRequres = getAsyncRequires(buffer);
-      asyncRequres.forEach(makeBrowserifyBundle);
+      var defs = asyncRequres.map(makeBrowserifyBundle);
 
       var totalPrelude = prepend;
       var offset = totalPrelude.split('\n').length - 1;
@@ -65,7 +65,9 @@ module.exports = function(filename) {
 
       this.queue( complete + '\n'+map.comment());
 
-      this.queue(null);
+      Q.all(defs).then(function(){
+        this.queue(null);
+      }.bind(this));
       
     }.bind(this)).done();
   });
@@ -125,6 +127,7 @@ function makeBrowserifyBundle(asyncDep){
       });
     
   }).done();
+  return def.promise;
 }
 
 function getPath(deployPath){
