@@ -1,6 +1,6 @@
 {
   "name": "promethify",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Browserify plugin async load code like AMD",
   "main": "index.js",
   "scripts": {
