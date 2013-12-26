@@ -55,7 +55,6 @@
     "zuul-mp": "~0.2.0"
   },
   "peerDependencies": {
-    "browserify": ">=2.0.0",
-    "scriptjs": ">=2.4.0"
+    "browserify": ">=2.0.0"
   }
 }
