@@ -4,7 +4,7 @@
 
 Browserify v2+ transform to require AMD style and async fetch bundles with minimal configuration
 
-After you have added the correct configuraton to your package.json, it's as simple as: 
+After you have added the correct [configuraton](https://github.com/johnkpaul/promethify#configuration) to your package.json, it's as simple as: 
 
     browserify --transform promethify main.js > bundle.js
 
