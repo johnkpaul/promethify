@@ -4,6 +4,8 @@
 
 Browserify v2+ transform to require AMD style and async fetch bundles with minimal configuration
 
+    browserify --transform promethify main.js > bundle.js
+
 
 ## Usage
 
@@ -50,6 +52,13 @@ window.loaded = true;
 
 ## Configuration
 
+This transform has two different modes of use.
+
+1. Self hosted. This will spin up a local web server to automatically serve the bundles that are requested on the fly. 
+1. Bring Your Own Hosting (BYOH). This will spit out all of the bundles to an output directory that you can serve separately, from a CDN or wherever you'd like. 
+Configuration is provided through the package.json of your project. 
+
+Self Hosted configuration:
 ```
   "promethify": {
     "basedir": "test",
@@ -58,8 +67,27 @@ window.loaded = true;
   }
 ```
 
-Configuration is provided through the package.json of your project. There are three required properties.
+BYOH configuration:
+```
+  "promethify": {
+    "basedir": "src",
+    "hostname": "cdn.yourwebsite.com",
+    "outputDir": "out",
+    "outputDeployPath": "static/project/releases",
+    "port": 8089
+  }
+```
+
+There are three required properties for either mode. 
 
 1. `basedir` This option is the path from the package.json of your project that you want to use for lookups when requiring files asynchronously. 
-2. `hostname` This option is the hostname that will be looked up from the browser to find this web server
-2. `port` This option is the port number that you want the server that asynchronously fetches the new bundles to bind to. 
+2. `hostname` This option is the hostname that will be looked up from the browser
+3. `port` This option is the port number that you want the server that asynchronously fetches the new bundles to bind to. 
+There are three required properties.
+
+There are two properties that will put promethify into BYOH mode.  If one is used, they are both required.
+
+1. `outputDir` This option is the file system path from the package.json of your project that all of the new bundles will be written into.
+2. `outputDeployPath` This option is the path that will be prepended to the bundle names when looked up from the browser.
+
+When in BYOH mode, the browser will make a request that looks like `//hostname:port/outputDeployPath/BUNDLE_NAME` You should make sure to serve the outputDir at the correct path.
