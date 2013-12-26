@@ -101,8 +101,8 @@ function addRequire(){
 function getAsyncRequires(source){
   var amdRequires = detective.find(source, {nodes: true});
   var amdRequireArray = amdRequires.expressions.map(function(arrString){
-    /* jshint evil: true */
-    var array = eval(arrString);
+    var exps = require('esprima').parse(arrString).body[0].expression;
+    var array = require('static-eval')(exps);
     return array;
   });
   return _.flatten(amdRequireArray);
