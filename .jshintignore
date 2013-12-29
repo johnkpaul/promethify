@@ -3,3 +3,5 @@ test/compiled.js
 test/compiled-for-source-maps.js
 test/compiled-for-coffee-source-maps.js
 test/outputDirTests/out
+test/browserifyShimTests/out
+test/browserifyShimTests/js

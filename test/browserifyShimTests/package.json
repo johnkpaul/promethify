@@ -1,0 +1,24 @@
+{
+  "name": "outputDirTests",
+  "version": "0.0.0",
+  "main": "index.js",
+  "promethify": {
+    "basedir": "src",
+    "hostname": "localhost",
+    "outputDir": "out",
+    "outputDeployPath": "out",
+    "port": 8089
+  },
+  "browser": {
+    "jquery": "./js/jquery.js"
+  },
+  "browserify-shim": {
+    "jquery": "$"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      "./index.js"
+    ]
+  }
+}

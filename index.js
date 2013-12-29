@@ -84,7 +84,12 @@ function addRequire(){
   var scriptjs = require('SCRIPTJS_LOC');
   var require = function require(keys, callback){
     if(Array.isArray(keys)){
-      var urls = keys.map(function(key){ return 'http://HOSTNAME:PORT_NUMOUTPUT_DEPLOY_PATH'+key; });
+
+      var urls = keys.map(function(key){
+        if( key[0] !== '/' ) { key = '/'+key;}
+        return 'http://HOSTNAME:PORT_NUMOUTPUT_DEPLOY_PATH'+key;
+      });
+
       var scriptParam = [urls, function(){
         var deps = keys.map(function(key){ return window.require(key); });
         callback.apply(null, deps);
@@ -119,11 +124,24 @@ function makeBrowserifyBundle(asyncDep){
     var basedir = data.pack.promethify.basedir;
     var dir = data.dir;
 
-    b
-      .add(dir + '/' + basedir + asyncDep)
-      .bundle({basedir: dir + '/' + basedir}, function(err, src){
-        def.resolve(src);
-      });
+    if(asyncDep[0] === '/'){
+      b
+        .add(dir + '/' + basedir + asyncDep)
+        .bundle({basedir: dir + '/' + basedir}, function(err, src){
+          def.resolve(src);
+        });
+    }
+    else {
+      var resumer = require('resumer');
+      var stream = resumer()
+                .queue('module.exports = require("'+asyncDep+'");').end();
+      b
+        .require(stream)
+        .bundle({basedir: dir + '/' + basedir}, function(err, src){
+          def.resolve(src);
+        });
+
+    }
     
   }).done();
   return def.promise;

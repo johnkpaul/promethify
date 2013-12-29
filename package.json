@@ -4,9 +4,10 @@
   "description": "Browserify plugin async load code like AMD",
   "main": "index.js",
   "scripts": {
-    "test": "node test/outputDirTests/runner.js && zuul-mp --local 3100 --reporter list -- test/test.js",
+    "test": "node test/browserifyShimTests/runner.js && node test/outputDirTests/runner.js && zuul-mp --local 3100 --reporter list -- test/test.js",
     "pretest": "npm run hint",
     "outputdirtest": "zuul-mp --local 3100 --reporter list -- test/outputDirTests/test.js",
+    "browserifyshimtest": "zuul-mp --local 3100 --reporter list -- test/browserifyShimTests/test.js",
     "hint": "jshint --config .jshintrc ."
   },
   "promethify": {
@@ -47,14 +48,16 @@
     "mkdirp": "~0.3.5",
     "node-static": "~0.7.2",
     "static-eval": "~0.1.0",
-    "esprima": "~1.0.4"
+    "esprima": "~1.0.4",
+    "resumer": "0.0.0"
   },
   "devDependencies": {
     "browserify": "git://github.com/johnkpaul/node-browserify.git#add_basedir_for_globals",
     "jshint": "~2.1.11",
     "convert-source-map": "~0.2.6",
     "coffeeify": "~0.5.2",
-    "zuul-mp": "~0.2.0"
+    "zuul-mp": "~0.2.0",
+    "browserify-shim": "~3.1.4"
   },
   "peerDependencies": {
     "browserify": ">=2.0.0"
