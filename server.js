@@ -9,6 +9,9 @@ var bundles = {};
 module.exports = {
   start: function(bundleEmitter){
     bundleEmitter.on('bundle', function(filename, promise){
+      if(filename[0] !== '/'){
+        filename = '/' + filename;
+      }
       bundles[filename] = promise;
     });
     pack.then(function(data){

@@ -24,4 +24,14 @@ describe('async require', function(){
       done();
     });
   });
+
+  it('should load from node_modules', function(done){
+    require(['innersource'], function(innersource){
+      assert.equal(innersource(inner), 'var x = 1;');
+      done();
+
+      function inner(){var x = 1;}
+    });
+  });
+
 });
