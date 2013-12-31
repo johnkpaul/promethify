@@ -8,8 +8,8 @@ var detective = require('detective');
 var generator = require('inline-source-map');
 var combine = require('combine-source-map');
 var _ = require('lodash');
-var findPackageJson = require('./findPackageJson');
-var outputDirWriter = require('./outputDirWriter');
+var findPackageJson = require('./lib/findPackageJson');
+var outputDirWriter = require('./lib/outputDirWriter');
 var scriptjsLocation = require.resolve('scriptjs');
 var Q = require('q');
 var events = require('events');
@@ -24,7 +24,7 @@ module.exports = function(filename) {
     pack = findPackageJson(filename);
     pack.then(function(data){
       if(!data.pack.promethify.outputDir){
-        var server = require('./server').start(bundleEmitter);
+        var server = require('./lib/server').start(bundleEmitter, pack);
       }
       else{
         outputDirWriter.start(bundleEmitter, data);
